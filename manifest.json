@@ -1,0 +1,22 @@
+{
+  "name": "Web Fetcher",
+  "manifest_version": 3,
+  "version": "0.1",
+  "description": "Prototype",
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*/*"],
+      "js": ["extractor/utils.js"]
+    },
+    {
+      "matches": ["https://book.douban.com/subject/*"],
+      "js": ["extractor/doubanBook.js"]
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

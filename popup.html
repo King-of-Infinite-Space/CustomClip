@@ -1,0 +1,42 @@
+<html>
+
+<head>
+    <style>
+        body {
+            width: 500px;
+            padding: 10px;
+        }
+
+        p {
+            font-size: 1.2em;
+        }
+
+        #submitButton {
+            display: none;
+        }
+
+        #inputBox {
+            width: 100%;
+            display: none;
+        }
+
+        .success {
+            color: green;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+    <script src="popup.js" type="module"></script>
+</head>
+
+<body>
+    <textarea id="inputBox" rows=20></textarea>
+    <p>
+        <button id="submitButton">Submit</button>
+    </p>
+    <div id="status">loading</div>
+</body>
+
+</html>
