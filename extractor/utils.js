@@ -14,12 +14,16 @@ const getTextFromXpath = (xpath) => {
     return contents.join(", ");
 }
 
-function fmtEntry(entry) {
+function extractEntry(entry) {
     if (typeof entry === 'string') {
-        return { "rich_text": [{ "text": { "content": getTextFromXpath(entry) } }] }
+        entry = {
+            xpath: entry,
+            output: (x) => ({ "rich_text": [{ "text": { "content": x } }] })
+        }
     }
     if (entry.xpath) {
-        return entry.output(getTextFromXpath(entry.xpath))
+        const content = getTextFromXpath(entry.xpath)
+        return content ? entry.output(content) : null
     } else {
         return entry.output()
     }
@@ -28,7 +32,10 @@ function fmtEntry(entry) {
 function extractData(properties) {
     const data = {}
     for (const key in properties) {
-        data[key] = fmtEntry(properties[key])
+        const entry = extractEntry(properties[key])
+        if (entry) {
+            data[key] = entry
+        }
     }
     return data
 }
