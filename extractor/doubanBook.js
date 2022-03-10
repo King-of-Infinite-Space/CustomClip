@@ -10,7 +10,7 @@ const entries = {
         output: (x) => ({ "url": x })
     },
     "作者": "//*[@id='info']/span[1]/a/text()",
-    "出版社": "//span[./text()='出版社:']/following::text()[1]",
+    "出版社": "//span[./text()='出版社:']/following-sibling::a[1]/text() | //span[./text()='出版社:']/following::text()[1]",
     "副标题": "//span[./text()='副标题:']/following::text()[1]",
     "原作名": "//span[./text()='原作名:']/following::text()[1]",
     "译者": "//span[./text()=' 译者']/following-sibling::a/text()",

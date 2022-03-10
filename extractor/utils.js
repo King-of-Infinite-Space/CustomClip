@@ -6,10 +6,13 @@ const getTextFromXpath = (xpath) => {
         XPathResult.ORDERED_NODE_SNAPSHOT_TYPE,
         null
     );
-    var contents = [];
+    const contents = [];
     for (let i = 0; i < matches.snapshotLength; i++) {
-        var node = matches.snapshotItem(i);
-        contents.push(node.textContent.trim());
+        const node = matches.snapshotItem(i);
+        const text = node.textContent.trim();
+        if (text) {
+            contents.push(text);
+        }
     }
     return contents.join(", ");
 }
