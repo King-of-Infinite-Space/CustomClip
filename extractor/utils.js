@@ -1,3 +1,5 @@
+// content scripts declared in manifest.json share the same global namespace
+
 const getTextFromXpath = (xpath) => {
     const matches = document.evaluate(
         xpath,
@@ -21,7 +23,7 @@ function extractEntry(entry) {
     if (typeof entry === 'string') {
         entry = {
             xpath: entry,
-            output: (x) => ({ "rich_text": [{ "text": { "content": x } }] })
+            output: x => x
         }
     }
     if (entry.xpath) {
@@ -43,5 +45,27 @@ function extractData(properties) {
     return data
 }
 
+function getCurrentScriptName() {
+    // ref https://stackoverflow.com/a/22165218
+    const stackTrace = new Error().stack;
+    const stackTraceLines = stackTrace.split('\n');
+    const callerLine = stackTraceLines[stackTraceLines.length-1]
+    const fileName = callerLine.split('/').pop().split('.')[0];
+    console.log(`Content script: ${fileName}`)
+    return fileName
+}
 
-// content scripts declared in manifest.json share the same global namespace
+function addListener(source, entries) {
+    chrome.runtime.onMessage.addListener(
+        function (message, sender, sendResponse) {
+            if (message.source === "popup") {
+                const data = extractData(entries)
+                console.log(data)
+                sendResponse({
+                    source: source,
+                    data: data
+                });
+            }
+        }
+    )
+}
