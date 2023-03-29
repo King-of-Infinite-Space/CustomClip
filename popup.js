@@ -15,11 +15,11 @@ function prettifyJson(json, indent = 2, level = 2) {
     return s
 }
 
-async function postData(data, destination) {
+async function postData(data, source, destination) {
     const send = {
         notion: postToNotion,
     }
-    const r = await send[destination](data)
+    const r = await send[destination](data, source)
 
     _status.innerText = prettifyJson(r)
     _status.style.display = 'block'
@@ -34,14 +34,14 @@ async function getData() {
     const tabs = await chrome.tabs.query({ active: true, currentWindow: true })
     chrome.tabs.sendMessage(tabs[0].id, { source: "popup" }, function (response) {
         if (response) {
-            _inputBox.value = prettifyJson(response.payload)
+            _inputBox.value = prettifyJson(response.data)
             _inputBox.style.display = 'block'
             _status.innerText = ''
             _button.style.display = 'block'
             _button.onclick = () => {
                 _status.classList.remove('error')
                 _status.classList.remove('success')
-                postData(_inputBox.value, response.destination)
+                postData(response.data, response.source, response.destination)
             }
         } else {
             document.getElementById('status').innerText = 'no data'

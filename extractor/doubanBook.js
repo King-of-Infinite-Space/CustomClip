@@ -50,12 +50,9 @@ chrome.runtime.onMessage.addListener(
             const data = extractData(entries)
             console.log(data)
             sendResponse({
-                source: "content_script",
+                source: "doubanBook",
                 destination: "notion",
-                payload: {
-                    "parent": { "database_id": "b6b4bb2df8c94f9d92cb9155b589f724" },
-                    "properties": data
-                }
+                data: data
             });
         }
     }
