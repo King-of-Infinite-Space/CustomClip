@@ -4,20 +4,26 @@
     <style>
         body {
             width: 500px;
-            padding: 10px;
+            padding: 0;
+            margin: 15px;
         }
 
         p {
             font-size: 1.2em;
         }
 
-        #submitButton {
+        #form {
             display: none;
         }
 
-        #inputBox {
+        .formRow {
             width: 100%;
-            display: none;
+            margin-bottom: 1em;
+        }
+
+        .controlRow {
+            display: flex;
+            gap: 1em;
         }
 
         .success {
@@ -32,11 +38,16 @@
 </head>
 
 <body>
-    <textarea id="inputBox" rows=20></textarea>
-    <p>
-        <button id="submitButton">Submit</button>
-    </p>
-    <div id="status">loading</div>
+    <div id="form">
+        <textarea id="inputBox" class="formRow" rows=20></textarea>
+        <div class="formRow controlRow">
+            <button id="submitButton">Submit</button>
+            <select id="destinations">
+                <option value="notion">Notion</option>
+            </select>
+        </div>
+    </div>
+    <div class="formRow" id="status">loading</div>
 </body>
 
 </html>
