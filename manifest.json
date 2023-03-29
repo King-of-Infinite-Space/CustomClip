@@ -1,7 +1,7 @@
 {
   "name": "Web Fetcher",
   "manifest_version": 3,
-  "version": "0.1",
+  "version": "0.2",
   "description": "Prototype",
   "permissions": [
     "activeTab"
@@ -21,6 +21,14 @@
       ],
       "js": [
         "extractor/doubanBook.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://store.steampowered.com/app/*"
+      ],
+      "js": [
+        "extractor/steam.js"
       ]
     }
   ],
