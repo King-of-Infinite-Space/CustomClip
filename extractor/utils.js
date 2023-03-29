@@ -48,7 +48,9 @@ function extractData(properties) {
 function getCurrentScriptName() {
     // ref https://stackoverflow.com/a/22165218
     const stackTrace = new Error().stack;
-    const stackTraceLines = stackTrace.split('\n');
+    console.log(stackTrace)
+    const stackTraceLines = stackTrace.trim().split('\n');
+    // firefox has an extra new line at the end
     const callerLine = stackTraceLines[stackTraceLines.length-1]
     const fileName = callerLine.split('/').pop().split('.')[0];
     console.log(`Content script: ${fileName}`)
