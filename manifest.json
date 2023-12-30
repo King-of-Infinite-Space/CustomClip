@@ -1,7 +1,7 @@
 {
   "name": "Web Fetcher",
   "manifest_version": 3,
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Prototype",
   "permissions": [
     "activeTab"
@@ -32,13 +32,12 @@
       ]
     }
   ],
+  "options_ui": {
+    "page": "src/settings.html",
+    "open_in_tab": true
+  },
   "action": {
     "default_popup": "popup.html"
-  },
-  "browser_specific_settings": {
-    "gecko": {
-      "id": "web-fetcher-dev@example.com"
-    }
   },
   "icons": {
     "256": "icon256.png"
