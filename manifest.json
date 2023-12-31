@@ -12,23 +12,8 @@
         "https://*/*"
       ],
       "js": [
-        "extractor/utils.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://book.douban.com/subject/*"
-      ],
-      "js": [
-        "extractor/doubanBook.js"
-      ]
-    },
-    {
-      "matches": [
-        "https://store.steampowered.com/app/*"
-      ],
-      "js": [
-        "extractor/steam.js"
+        "src/rules.js",
+        "src/content.js"
       ]
     }
   ],
@@ -37,7 +22,7 @@
     "open_in_tab": true
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_popup": "src/popup.html"
   },
   "icons": {
     "256": "icon256.png"

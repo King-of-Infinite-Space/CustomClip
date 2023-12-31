@@ -1,4 +1,4 @@
-import { postToNotion } from "./sender/notionDb.js"
+import { postToNotion } from "../sender/notionDb.js"
 
 const _status = document.getElementById('status')
 const _button = document.getElementById('submitButton')
@@ -43,7 +43,7 @@ async function getData() {
             _button.onclick = () => {
                 _status.classList.remove('error')
                 _status.classList.remove('success')
-                postData(response.data, response.source)
+                postData(response.data, response.name)
             }
         } else {
             document.getElementById('status').innerText = 'no data'
