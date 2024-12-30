@@ -5,49 +5,45 @@
     <title>Settings</title>
     <link rel="stylesheet" href="../lib/bamboo.css" />
     <link rel="stylesheet" href="settings.css" />
+    <script src="../lib/petite-vue-csp.iife.js"></script>
+    <script src="settings.js" defer></script>
+    <style>
+      body {
+        max-width: 80ch;
+        width: 100%;
+      }
+      h2 {
+        text-align: center;
+      }
+    </style>
   </head>
   <body>
-    <!-- ~3.13.3  2023-12-30 -->
-    <script src="../lib/alpine.js"></script>
-    <script src="settings.js"></script>
-    <!-- [Alpine CSP limitations](https://gist.github.com/phacks/0991e8340bff6184c2c9d6793600315a) -->
-    <!-- [x-for for CSP build · alpinejs/alpine · Discussion #2724](https://github.com/alpinejs/alpine/discussions/2724) -->
-    <h1>Settings</h1>
-    <div id="main" x-data="data">
-      <template x-for="rule in rules">
-        <details>
-          <summary x-html="getRuleNameHTML"></summary>
-          <form>
-            <p>
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" required />
-            </p>
-
-            <p>
-              <label for="urlRegex">URL Regex</label>
-              <input type="text" id="urlRegex" name="urlRegex" required />
-            </p>
-
-            <p>
-              <label for="entries">Entries</label>
-              <textarea id="entries" name="entries" required></textarea>
-            </p>
-
-            <p>
-              <input type="checkbox" onclick="toggleEnable" />
-              <span>Enable</span>
-              <button type="submit" id="save">Save</button>
-              <button type="button" id="delete">Delete</button>
-            </p>
-          </form>
-        </details>
-      </template>
-    </div>
-    <p style="display: flex;">
-      <button type="button" id="add">Add</button>
-      <button type="button" id="import" style="margin-left:auto;">Import</button>
-      <span>&nbsp;</span>
-      <button type="button" id="export">Export</button>
+    <h2>Settings</h2>
+    <h3>
+      <label for="rules">Rules</label>
+    </h3>
+    <p>
+      <textarea
+        id="rules"
+        rows="20"
+        v-model="ruleStr"
+        @vue:mounted="mounted"
+      ></textarea>
     </p>
+    <p>
+      <button v-on:click="saveRules">Save</button>
+    </p>
+    <p>{{ saveStatus }}</p>
+    <h4>
+      <label for="rule-url">Rule URL</label>
+    </h4>
+    <p>
+      <input type="text" name="rule-url" id="rule-url" v-model="ruleUrl" />
+    </p>
+    <p>
+      <button v-on:click="fetchExternalRules">Fetch</button>
+      <!-- <button disabled="disabled">Disabled</button> -->
+    </p>
+    <p>{{ fetchStatus }}</p>
   </body>
 </html>

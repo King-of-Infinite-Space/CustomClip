@@ -1,20 +1,13 @@
 {
   "name": "Web Fetcher",
   "manifest_version": 3,
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Prototype",
-  "permissions": [
-    "activeTab"
-  ],
+  "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
-      "matches": [
-        "https://*/*"
-      ],
-      "js": [
-        "src/rules.js",
-        "src/content.js"
-      ]
+      "matches": ["https://*/*"],
+      "js": ["src/content.js"]
     }
   ],
   "options_ui": {
@@ -26,5 +19,10 @@
   },
   "icons": {
     "256": "icon256.png"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{64db752b-b1a2-46c9-a7fb-cf4368b745e6}"
+    }
   }
 }

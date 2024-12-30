@@ -8,7 +8,7 @@
     --b-link: #bf616a;
     --b-btn-bg: #242933;
     --b-btn-txt: #fff;
-    --b-focus: #88c0d0
+    --b-focus: #88c0d0;
 }
 
 @media(prefers-color-scheme: dark) {
@@ -69,7 +69,7 @@ fieldset,
 iframe,
 audio,
 video {
-    margin: 0 0 1.5rem
+    margin: 0 0 1rem
 }
 
 h1,
@@ -79,7 +79,7 @@ h4,
 h5,
 h6 {
     line-height: 1.25;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
     text-wrap: balance
 }
 
@@ -208,7 +208,7 @@ details {
 }
 
 details[open]>summary {
-    margin-bottom: 1.5rem
+    margin-bottom: 1rem
 }
 
 summary {

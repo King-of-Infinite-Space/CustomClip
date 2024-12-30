@@ -1,53 +1,58 @@
+<!DOCTYPE html>
 <html>
-
-<head>
+  <head>
+    <meta charset="utf-8" />
     <style>
-        body {
-            width: 500px;
-            padding: 0;
-            margin: 15px;
-        }
+      body {
+        width: 500px;
+        padding: 0;
+        margin: 15px;
+      }
 
-        p {
-            font-size: 1.2em;
-        }
+      p {
+        font-size: 1.2em;
+      }
+      .form-row {
+        width: 100%;
+        margin-bottom: 1em;
+      }
 
-        #form {
-            display: none;
-        }
+      .control-row {
+        display: flex;
+        gap: 1em;
+      }
 
-        .formRow {
-            width: 100%;
-            margin-bottom: 1em;
-        }
+      #optionsButton {
+        margin-left: auto;
+      }
 
-        .controlRow {
-            display: flex;
-            gap: 1em;
-        }
+      .success {
+        color: green;
+      }
 
-        .success {
-            color: green;
-        }
-
-        .error {
-            color: red;
-        }
+      .error {
+        color: red;
+      }
     </style>
-    <script src="popup.js" type="module"></script>
-</head>
+    <script src="../lib/petite-vue-csp.iife.js"></script>
+    <script src="sender.js"></script>
+    <script src="popup.js" defer></script>
+  </head>
 
-<body>
+  <body>
     <div id="form">
-        <textarea id="inputBox" class="formRow" rows=20></textarea>
-        <div class="formRow controlRow">
-            <button id="submitButton">Submit</button>
-            <select id="destinations">
-                <option value="notion">Notion</option>
-            </select>
-        </div>
+      <div class="form-row" id="preStatus">loading...</div>
+      <textarea id="inputBox" class="form-row" rows="20"></textarea>
+      <div class="form-row control-row">
+        <button id="submitButton">Submit</button>
+        <select id="destinations">
+          <option v-for="dest in vstore.destValues" v-bind:value="dest">
+            {{dest}}
+          </option>
+        </select>
+        <button id="optionsButton">Options</button>
+      </div>
     </div>
-    <div class="formRow" id="status">loading</div>
-</body>
-
+    <div class="form-row" id="postStatus"></div>
+  </body>
 </html>
