@@ -23,7 +23,7 @@ const sender = {
 
   yamlfrontmatter(jsonData, options = {}) {
     try {
-      // Format json into yaml frontmatter
+      // Format json into yaml frontmatter in markdown
       let yamlStr = '---\n'
       for (const [key, value] of Object.entries(jsonData)) {
         // Handle different value types
@@ -35,15 +35,15 @@ const sender = {
       }
       yamlStr += '---\n'
 
-      let filename = 'data.yaml'
+      let filename = 'data.md'
       for (const [key, value] of Object.entries(jsonData)) {
         if (key.toLowerCase() === 'title' || key === '标题') {
-          filename = value + '.yaml'
+          filename = value + '.md'
         }
       }
 
       // Create and download the file
-      const blob = new Blob([yamlStr], { type: 'text/yaml' })
+      const blob = new Blob([yamlStr], { type: 'text/markdown' })
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
@@ -59,7 +59,7 @@ const sender = {
     }
   },
 
-  async googleSheet(jsonData, { sheetId, sheetName, apiKey }) {
+  async googlesheet(jsonData, { sheetId, sheetName, apiKey }) {
     // TODO: implement auth
     const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`
 

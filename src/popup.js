@@ -1,7 +1,6 @@
 const vstore = PetiteVue.reactive({
   sendOptions: [],
   destinations: [],
-  destValues: [],
 })
 
 PetiteVue.createApp({
@@ -23,17 +22,17 @@ window.onload = () => {
 
 function prettifyJson(
   jsonData,
-  { indent = 2, level = 2, removeOuterBrackets = false } = {}
+  { indent = 2, level = 2, removeOutmost = false } = {}
 ) {
   let s = JSON.stringify(jsonData, null, indent)
   s = s.replace(new RegExp(`\n[ ]{${(level + 1) * indent},}`, 'g'), '')
   s = s.replace(new RegExp(`\n[ ]{${level * indent}}([}\\]],?)`, 'g'), '$1')
-  if (removeOuterBrackets) {
-    if (s.startsWith('{\n')) {
-      s = s.slice(2) // remove outer brackets and newline
+  if (removeOutmost) {
+    if (s.startsWith('{\n') && s.endsWith('\n}')) {
+      s = s.slice(2, -2)
     }
-    if (s.endsWith('\n}')) {
-      s = s.slice(0, -2) // remove newline and outer brackets
+    if (s.startsWith('"') && s.endsWith('"')) {
+      s = s.slice(1, -1)
     }
   }
   return s
@@ -62,7 +61,7 @@ async function postData(data, source) {
     _postStatus.innerText =
       successText +
       prettifyJson(result.response, {
-        removeOuterBrackets: true,
+        removeOutmost: true,
       })
   } catch (error) {
     _postStatus.innerText = error
@@ -82,7 +81,6 @@ async function getData() {
       vstore.destinations = response.destinations.filter(
         dest => sender[dest.name.toLowerCase()] !== undefined
       )
-      vstore.destValues = vstore.destinations.map(dest => dest.name)
       _postStatus.innerText = ''
       _submitButton.onclick = () => {
         _postStatus.classList.remove('error')
