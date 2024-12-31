@@ -1,0 +1,45 @@
+[
+  {
+    "name": "douban book",
+    "matchURL": "book\\.douban\\.com/subject/",
+    "enabled": true,
+    "destinations": [
+      {
+        "name": "notion",
+        "databaseId": "YOUR_DATABASE_ID",
+        "token": "YOUR_TOKEN"
+      }
+    ],
+    "entries": {
+      "标题": "//*[@id='mainpic']/a/@title",
+      "封面": "//*[@id='mainpic']/a/img/@src",
+      "作者": "//*[@id='info']/span[1]/a/text()",
+      "出版社": "//span[./text()='出版社:']/following-sibling::a[1]/text() | //span[./text()='出版社:']/following::text()[1]",
+      "副标题": "//span[./text()='副标题:']/following::text()[1]",
+      "原作名": "//span[./text()='原作名:']/following::text()[1]",
+      "译者": "//span[./text()=' 译者']/following-sibling::a/text()",
+      "出版年份": {
+        "xpath": "//span[./text()='出版年:']/following::text()[1]",
+        "transformations": [["splitSelect", "-"], ["parseInt"]]
+      },
+      "页数": {
+        "xpath": "//span[./text()='页数:']/following::text()[1]",
+        "transformations": [["parseInt"]]
+      },
+      "评分": {
+        "xpath": "//strong[@property='v:average']",
+        "transformations": [["parseFloat"]]
+      },
+      "评价人数": {
+        "xpath": "//span[@property='v:votes']",
+        "transformations": [["parseInt"]]
+      },
+      "链接": {
+        "transformations": [["getCurrentURL"]]
+      },
+      "标记日期": {
+        "transformations": [["getCurrentDate"]]
+      }
+    }
+  }
+]
