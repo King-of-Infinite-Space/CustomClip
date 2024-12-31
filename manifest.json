@@ -1,7 +1,7 @@
 {
-  "name": "Web Fetcher",
+  "name": "Custom Clip",
   "manifest_version": 3,
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Prototype",
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
