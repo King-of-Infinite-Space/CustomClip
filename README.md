@@ -4,7 +4,7 @@
 
 - Define "rules" in JSON in extension settings
   - Each rule specifies a regex to match URL and xpaths to extract 
-  - See `example_rules` folder
+  - [example](./example_rules/steam.json)
 - Open the extension on a matching page to preview extracted data
   ```json
     {"Title": "HUMANITY","Rating": 94}

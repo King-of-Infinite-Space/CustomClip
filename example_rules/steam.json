@@ -1,5 +1,6 @@
 [
   {
+    "_note": "Right click on the 'Raw' button to copy rule URL to extension settings",
     "name": "steam",
     "matchURL": "store\\.steampowered\\.com/app/",
     "enabled": true,
@@ -9,7 +10,8 @@
         "databaseId": "YOUR_DATABASE_ID",
         "token": "YOUR_TOKEN"
       },
-      { "name": "yamlfrontmatter" }
+      { "name": "yamlfrontmatter" },
+      { "name": "webhook", "url": "YOUR_WEBHOOK_URL" }
     ],
     "entries": {
       "Title": "//div[@id='appHubAppName']",
