@@ -1,7 +1,7 @@
 {
   "name": "Custom Clip",
   "manifest_version": 3,
-  "version": "0.4.1",
+  "version": "0.5.1",
   "description": "Prototype",
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
