@@ -13,8 +13,9 @@ PetiteVue.createApp({
       const rules = await response.json()
       this.rules.push(...rules)
       this.ruleStr = JSON.stringify(this.rules, null, 2)
+      const fileName = this.ruleUrl.split('/').pop()
+      this.fetchStatus = `${rules.length} rules added from ${fileName}. Please edit destinations. "Save" to confirm.`
       console.debug(rules.length, 'rules fetched from', this.ruleUrl)
-      this.fetchStatus = `${rules.length} rules added. "Save" to confirm.`
     } catch (error) {
       this.fetchStatus = error
       console.error('Failed to fetch external rules:', error)
