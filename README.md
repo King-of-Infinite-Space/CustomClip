@@ -9,6 +9,7 @@
   ```json
     {"Title": "HUMANITY","Rating": 94}
 - Save the extracted data to
+  - Webhook (for integrating with other services such as Make/Zapier/...)
   - Notion database
   - Markdown with YAML frontmatter (for Obsidian etc)
   - _More to come_
@@ -20,5 +21,5 @@ Useful for building a personal catalogue (such as books read)
 
 #### Alternatives
 
-- [pdulvp/extract-data](https://github.com/pdulvp/extract-data) - has nice UI to edit and validate rules, but only supports downloading the data as a file
-- Zotero - includes "translators" (i.e. rules) for various academic resources, but only saves them to Zotero
+- [pdulvp/extract-data](https://github.com/pdulvp/extract-data)
+- powersave.pro
