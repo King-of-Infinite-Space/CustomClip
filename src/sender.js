@@ -58,7 +58,23 @@ const sender = {
       throw error
     }
   },
-
+  async webhook(data, { url }) {
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      })
+      return {
+        success: response.ok,
+      }
+    } catch (error) {
+      console.error('Error sending to webhook:', error)
+      throw error
+    }
+  },
   async googlesheet(jsonData, { sheetId, sheetName, apiKey }) {
     // TODO: implement auth
     const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`
