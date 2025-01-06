@@ -24,33 +24,39 @@ function prettifyJson(
   jsonData,
   { indent = 2, level = 2, removeOutmost = false } = {}
 ) {
-  let s = JSON.stringify(jsonData, null, indent)
-  s = s.replace(new RegExp(`\n[ ]{${(level + 1) * indent},}`, 'g'), '')
-  s = s.replace(new RegExp(`\n[ ]{${level * indent}}([}\\]],?)`, 'g'), '$1')
+  let jsonStr = JSON.stringify(jsonData, null, indent)
+  jsonStr = jsonStr.replace(
+    new RegExp(`\n[ ]{${(level + 1) * indent},}`, 'g'),
+    ''
+  )
+  jsonStr = jsonStr.replace(
+    new RegExp(`\n[ ]{${level * indent}}([}\\]],?)`, 'g'),
+    '$1'
+  )
   if (removeOutmost) {
-    if (s.startsWith('{\n') && s.endsWith('\n}')) {
-      s = s.slice(2, -2)
+    if (jsonStr.startsWith('{\n') && jsonStr.endsWith('\n}')) {
+      jsonStr = jsonStr.slice(2, -2)
     }
-    if (s.startsWith('"') && s.endsWith('"')) {
-      s = s.slice(1, -1)
+    if (jsonStr.startsWith('"') && jsonStr.endsWith('"')) {
+      jsonStr = jsonStr.slice(1, -1)
     }
   }
-  return s
+  return jsonStr
 }
 
 async function postData(data, source) {
   try {
     const destName = document.getElementById('destinations').value
     _postStatus.innerText = `Sending from ${source} to ${destName}...`
-    const destination = vstore.destinations.filter(
+    const destOptions = vstore.destinations.filter(
       dest => dest.name === destName
     )[0]
     // console.log(destination) // an object with token etc
-    destination.name = destination.name.toLowerCase()
-    const formattedData = formatter[destination.name]
-      ? formatter[destination.name](data)
+    destOptions.name = destOptions.name.toLowerCase()
+    const formattedData = formatter[destOptions.name]
+      ? formatter[destOptions.name](data)
       : data
-    const result = await sender[destination.name](formattedData, destination)
+    const result = await sender[destOptions.name](formattedData, destOptions)
     let successText = 'Success\n'
     if (result.success) {
       _postStatus.classList.add('success')
@@ -58,11 +64,12 @@ async function postData(data, source) {
       successText = 'Error\n'
       _postStatus.classList.add('error')
     }
-    _postStatus.innerText =
-      successText +
-      prettifyJson(result.response, {
+    if (result.response) {
+      successText += prettifyJson(result.response, {
         removeOutmost: true,
       })
+    }
+    _postStatus.innerText = successText
   } catch (error) {
     _postStatus.innerText = error
     _postStatus.classList.add('error')

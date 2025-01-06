@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   ;(async () => {
     const rules = await chrome.storage.sync
       .get('rules')
-      .then(result => result.rules)
+      .then(result => result.rules || [])
     let rule = null
     for (const r of rules) {
       if (

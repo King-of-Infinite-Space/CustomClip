@@ -46,8 +46,7 @@
       <div class="form-row control-row">
         <button id="submitButton">Submit</button>
         <select id="destinations">
-          <option v-for="(dest, index) in vstore.destinations" v-bind:value="dest.name" v-bind:selected="index === 0"></option>
-            {{dest.name}}
+          <option v-for="(dest, index) in vstore.destinations" v-bind:value="dest.name" v-bind:selected="index === 0" v-text="dest.name"></option>
           </option>
         </select>
         <button id="optionsButton">Options</button>
