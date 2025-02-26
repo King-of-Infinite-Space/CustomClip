@@ -1,6 +1,6 @@
 // used in popup
 
-const sender = {
+export const sender = {
   async notion(data, { databaseId, token }) {
     const response = await fetch('https://api.notion.com/v1/pages', {
       method: 'POST',
@@ -52,7 +52,7 @@ const sender = {
 
       // Cleanup
       setTimeout(() => URL.revokeObjectURL(url), 100)
-      return { success: true, response: 'Initiating download' }
+      return { success: true, response: 'Download started' }
     } catch (error) {
       console.error('Error creating YAML frontmatter:', error)
       throw error
@@ -67,63 +67,22 @@ const sender = {
         },
         body: JSON.stringify(data),
       })
+      // hostname
+      const hostname = new URL(url).hostname
       return {
         success: response.ok,
+        response: `Sent to webhook at ${hostname}`,
       }
     } catch (error) {
       console.error('Error sending to webhook:', error)
       throw error
     }
   },
-  async googlesheet(jsonData, { sheetId, sheetName, apiKey }) {
-    // TODO: implement auth
-    const endpoint = `https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/${sheetName}`
-
-    try {
-      // Fetch headers
-      const headersResponse = await fetch(`${endpoint}!A1:Z1?key=${apiKey}`)
-      if (!headersResponse.ok) {
-        throw new Error('Failed to fetch headers', headersResponse.statusText)
-      }
-
-      const headersData = await headersResponse.json()
-      const headers = headersData.values?.[0] || []
-
-      // Map JSON data to headers
-      const rowData = headers.map(key =>
-        jsonData[key] !== undefined ? jsonData[key] : ''
-      )
-
-      // Append the row
-      const response = await fetch(
-        `${endpoint}:append?valueInputOption=USER_ENTERED&insertDataOption=INSERT_ROWS&key=${apiKey}`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            values: [rowData],
-          }),
-        }
-      )
-
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(
-          `API Error: ${errorData.error?.message || response.statusText}`
-        )
-      }
-
-      return await response.json()
-    } catch (error) {
-      console.error('Error adding row to sheet:', error)
-      throw error
-    }
-  },
+  async obsidian(data, params) {
+  }
 }
 
-const formatter = {
+export const formatter = {
   notion(data) {
     const formattedData = {}
 

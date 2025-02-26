@@ -185,7 +185,7 @@ var {
     border-radius: .25rem;
     padding: .125rem .25rem;
     font-family: var(--b-font-mono);
-    font-size: .875em
+    /* font-size: .875em */
 }
 
 pre {

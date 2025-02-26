@@ -1,18 +1,28 @@
-PetiteVue.createApp({
+import { createApp } from '../lib/petite-vue-csp.es.js'
+import  HighlightedCode from '../lib/highlighted-code-web.js'
+
+import { prettifyJson } from './utils.js'
+
+createApp({
   rules: [],
   ruleStr: '',
   ruleUrl: '',
   saveStatus: '',
   fetchStatus: '',
   fetchExternalRules: async function () {
+    // for example
+    // support the github url (simply replace blob with raw)
+    // https://github.com/King-of-Infinite-Space/CustomClip/blob/main/example_rules/steam.json
+    let url = this.ruleUrl.trim()
+    url = url.replace(/github\.com\/(.*)\/blob\//, "raw.githubusercontent.com/$1/")
     try {
-      const response = await fetch(this.ruleUrl)
+      const response = await fetch(url)
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`HTTP error: ${response.status}`)
       }
       const rules = await response.json()
       this.rules.push(...rules)
-      this.ruleStr = JSON.stringify(this.rules, null, 2)
+      this.ruleStr = prettifyJson(this.rules, {maxLevel: 4})
       const fileName = this.ruleUrl.split('/').pop()
       this.fetchStatus = `${rules.length} rules added from ${fileName}. Please edit destinations. "Save" to confirm.`
       console.debug(rules.length, 'rules fetched from', this.ruleUrl)
@@ -24,20 +34,24 @@ PetiteVue.createApp({
   loadRules: async function () {
     try {
       const result = await chrome.storage.sync.get('rules')
-      const rules = result.rules
+      let rules = result.rules
       if (!rules) {
-        this.ruleStr = "No saved rules"
-        return
+        rules = [{
+          "name": "Example Rule",
+          "matchURL": "example\.com",
+        }]
       }
       this.rules = rules
-      this.ruleStr = JSON.stringify(this.rules, null, 2)
-      this.saveStatus = `${rules.length} rules loaded from save`
+      this.ruleStr = prettifyJson(rules, {maxLevel: 4})
+      this.saveStatus = `${rules.length} rules loaded from storage`
     } catch (error) {
       this.saveStatus = error
       console.error('Failed to load rules from storage:', error)
     }
   },
   saveRules: async function () {
+    // somehow highlighted code breaks model
+    this.ruleStr = document.getElementById('rules').value
     try {
       const rules = JSON.parse(this.ruleStr)
       this.rules = rules

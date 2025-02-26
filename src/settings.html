@@ -3,10 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <title>Settings</title>
+    <script src="settings.js" type="module"></script>
     <link rel="stylesheet" href="../lib/bamboo.css" />
-    <link rel="stylesheet" href="settings.css" />
-    <script src="../lib/petite-vue-csp.iife.js"></script>
-    <script src="settings.js" defer></script>
+    <link rel="stylesheet" href="./highlight.css" />
     <style>
       body {
         max-width: 80ch;
@@ -28,6 +27,10 @@
         rows="20"
         v-model="ruleStr"
         @vue:mounted="mounted"
+        is="highlighted-code"
+        language="json"
+        tab-size="2"
+        spellcheck="false"
       ></textarea>
     </p>
     <p>
