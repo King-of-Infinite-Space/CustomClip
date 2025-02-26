@@ -3,7 +3,7 @@
 const transformationRegistry = {
   parseInt: args => parseInt(args[0]),
   parseFloat: args => parseFloat(args[0]),
-  findMatch: args => args[0].match(new RegExp(args[1]))[args[2] || 0],
+  matchRegex: args => args[0].match(new RegExp(args[1]))[args[2] || 0],
   splitSelect: args => args[0].split(args[1])[args[2]],
   replaceAll: args => args[0].replaceAll(args[1], args[2]),
   getCurrentDate: args => new Date().toISOString().split('T')[0],
@@ -14,13 +14,22 @@ const transformationRegistry = {
   divideBy: args => args[0] / args[1],
 }
 
-const applyTransformation = (value, transformations) => {
-  return transformations.reduce((acc, [fn, ...args]) => {
+const applyTransformation = (content, transformations, key) => {
+  let result = content
+  let errMsg = null
+  // Apply transformations in order
+  for (const [fn, ...args] of transformations) {
     if (transformationRegistry[fn]) {
-      return transformationRegistry[fn]([acc, ...args])
+      try {
+        result = transformationRegistry[fn]([result, ...args])
+      } catch (error) {
+        errMsg = `Error applying transformation ${fn} for ${key}: ${error.message}`
+        console.error(errMsg)
+        break
+      }
     }
-    console.error(`Unsupported transformation function: ${fn}`)
-  }, value)
+  }
+  return [result, errMsg]
 }
 
 const getTextFromXpath = xpath => {
@@ -42,27 +51,41 @@ const getTextFromXpath = xpath => {
   return contents.join(', ')
 }
 
-function extractEntry(entry) {
-  const content =
-    typeof entry === 'string'
-      ? getTextFromXpath(entry)
-      : getTextFromXpath(entry.xpath)
-  if (entry.transformations) {
-    return applyTransformation(content, entry.transformations)
+function extractEntry(entry, key) {
+  let content = ''
+  let errMsg = null
+  if (typeof entry === 'string') {
+    content = getTextFromXpath(entry)
+  } else if (entry.xpath) {
+    content = getTextFromXpath(entry.xpath)
+  } else if (entry.css) {
+    const element = document.querySelector(entry.css)
+    content = element ? element.innerText.trim() : ''
   }
-  return content
+  if (
+    (content !== '' || (!entry.xpath && !entry.css)) &&
+    entry.transformations
+  ) {
+    // only apply transformations if content is not empty or no extraction needed
+    return applyTransformation(content, entry.transformations, key)
+  }
+  return [content, errMsg]
 }
 
 function extractData(properties) {
   const data = {}
+  const errors = []
   for (const key in properties) {
-    const entry = extractEntry(properties[key])
-    if (entry) {
-      data[key] = entry
+    const [content, errorMsg] = extractEntry(properties[key], key)
+    data[key] = content
+    if (errorMsg) {
+      errors.push(errorMsg)
     }
+    // could be empty string if no match
   }
-  return data
+  return [data, errors]
 }
+
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.source !== 'popup') {
     return false // Don't keep channel open
@@ -84,15 +107,19 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         break
       }
     }
+    if (!rule) {
+      sendResponse({ name: '' }) // No matching rule
+      return
+    }
+    const [contents, errors] = extractData(rule.entries)
 
-    const response = rule
-      ? {
-          name: rule.name,
-          entries: extractData(rule.entries),
-          destinations: rule.destinations,
-        }
-      : { name: '' }
-
+    const response = {
+      name: rule.name,
+      destinations: rule.destinations,
+      entries: contents,
+      errors: errors,
+    }
+    // TODO better error handling
     sendResponse(response)
   })()
 
