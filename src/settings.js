@@ -10,11 +10,11 @@ createApp({
   saveStatus: '',
   fetchStatus: '',
   fetchExternalRules: async function () {
-    // for example
     // support the github url (simply replace blob with raw)
     // https://github.com/King-of-Infinite-Space/CustomClip/blob/main/example_rules/steam.json
     let url = this.ruleUrl.trim()
     url = url.replace(/github\.com\/(.*)\/blob\//, "raw.githubusercontent.com/$1/")
+    // $1 is user/repo
     try {
       const response = await fetch(url)
       if (!response.ok) {
@@ -57,15 +57,18 @@ createApp({
       this.rules = rules
       await chrome.storage.sync.set({ rules: rules })
       this.saveStatus = `${rules.length} rules saved to storage`
-      // console.debug(rules.length, 'rules saved to storage')
+      this.fetchStatus = ''
     } catch (error) {
       this.saveStatus = `${error}`
       console.error('Failed to save rules to storage:', error)
     }
   },
+  editSaveStatus: function () {
+    this.saveStatus = 'edit not saved'
+  },
   async mounted() {
-    // somehow this method needs to be called explicitly
-    // console.debug('mounted')
+    // somehow this method is not called automatically
+    // need to bind explicitly in HTML
     try {
       await this.loadRules()
     } catch (error) {
