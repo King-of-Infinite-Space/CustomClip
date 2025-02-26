@@ -43,18 +43,19 @@ createApp({
         : JSON.parse(this.inputValue)
 
       const result = await sender[dest.name](formattedData, dest)
-      let statusText = "Success"
+      let statusText = "Sent without response"
 
       if (result.success) {
+        // statusText = 'Success'
         this.postStatusClass = 'success'
       } else {
-        statusText = 'Error'
+        // statusText = 'Error'
         this.postStatusClass = 'error'
       }
 
       if (result.response) {
         const responseText = prettifyJson(result.response, {removeOutmost: true})
-        statusText += responseText
+        statusText = responseText
       }
 
       this.postStatus = statusText
@@ -88,6 +89,11 @@ createApp({
         this.destinations = filteredDestinations
         if (filteredDestinations.length > 0) {
           this.selectedDestination = filteredDestinations[0].name
+        }
+
+        if (response.errors.length > 0) {
+          this.postStatusClass = 'error'
+          this.postStatus = response.errors.join('\n')
         }
 
         this.postStatus = ''

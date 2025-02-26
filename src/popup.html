@@ -14,7 +14,9 @@
         width: 100%;
         margin-bottom: 1rem;
       }
-
+      #form > .form-row:first-child {
+        font-size: 1.1rem;
+      }
       .control-row {
         display: flex;
         gap: 1rem;
@@ -34,6 +36,10 @@
 
       .error {
         color: red;
+      }
+
+      #postStatus {
+        white-space: pre-wrap;
       }
     </style>
     <script src="popup.js" type="module"></script>
@@ -61,10 +67,11 @@
             v-text="dest.name"
           ></option>
         </select>
-        <button id="optionsButton" v-on:click="openOptionsPage">Options</button>
+        <button id="optionsButton" v-on:click="openOptionsPage">Settings</button>
       </div>
     </div>
     <div
+      id="postStatus"
       class="form-row"
       v-bind:class="postStatusClass"
       v-text="postStatus"
