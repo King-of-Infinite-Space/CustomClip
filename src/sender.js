@@ -1,5 +1,23 @@
 // used in popup
 
+function getFilename(data) {
+  // get filename from data object
+  for (const [key, value] of Object.entries(data)) {
+    if (key.toLowerCase() === 'title' || key === '标题') {
+      return value + '.md'
+    }
+  }
+  // local time in yymmdd-hhmmss format
+  const now = new Date()
+  const yy = now.getFullYear().toString().slice(2)
+  const MM = String(now.getMonth() + 1).padStart(2, '0')
+  const dd = String(now.getDate()).padStart(2, '0')
+  const hh = String(now.getHours()).padStart(2, '0')
+  const mm = String(now.getMinutes()).padStart(2, '0')
+  const ss = String(now.getSeconds()).padStart(2, '0')
+  return `custom-clip-${yy}${MM}${dd}-${hh}${mm}${ss}.md`
+}
+
 export const sender = {
   async notion(data, { databaseId, token }) {
     const response = await fetch('https://api.notion.com/v1/pages', {
@@ -21,11 +39,11 @@ export const sender = {
     }
   },
 
-  yamlfrontmatter(jsonData, options = {}) {
+  yamlfrontmatter(data, options = {}) {
     try {
       // Format json into yaml frontmatter in markdown
       let yamlStr = '---\n'
-      for (const [key, value] of Object.entries(jsonData)) {
+      for (const [key, value] of Object.entries(data)) {
         // Handle different value types
         const formattedValue =
           typeof value === 'string'
@@ -35,12 +53,7 @@ export const sender = {
       }
       yamlStr += '---\n'
 
-      let filename = 'data.md'
-      for (const [key, value] of Object.entries(jsonData)) {
-        if (key.toLowerCase() === 'title' || key === '标题') {
-          filename = value + '.md'
-        }
-      }
+      const filename = getFilename(data)
 
       // Create and download the file
       const blob = new Blob([yamlStr], { type: 'text/markdown' })
@@ -79,6 +92,10 @@ export const sender = {
     }
   },
   async obsidian(data, params) {
+    // TODO implement obsidian sender
+    // remove name from params
+    const urlParams = new URLSearchParams(params).toString()
+    const obsidianURI = `obsidian://new?${urlParams}`
   }
 }
 

@@ -63,8 +63,8 @@
         <select v-model="selectedDestination" v-show="currentRule">
           <option
             v-for="dest in destinations"
-            v-bind:value="dest.name"
-            v-text="dest.name"
+            v-bind:value="dest.sender"
+            v-text="dest.name || dest.sender"
           ></option>
         </select>
         <button id="optionsButton" v-on:click="openOptionsPage">Settings</button>

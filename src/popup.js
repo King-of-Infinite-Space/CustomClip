@@ -30,19 +30,18 @@ createApp({
   async submitData() {
     try {
       this.postStatusClass = ''
-      const destName = this.selectedDestination
       this.postStatus = `Sending from ${this.currentRule} to ${destName}...`
+      const senderName = this.selectedDestination
 
-      const dest = this.destinations.filter(
-        dest => dest.name === destName
+      const senderOptions = this.destinations.filter(
+        dest => dest.sender === senderName
       )[0]
 
-      dest.name = dest.name.toLowerCase()
-      const formattedData = formatter[dest.name]
-        ? formatter[dest.name](JSON.parse(this.inputValue))
+      const formattedData = formatter[senderName]
+        ? formatter[senderName](JSON.parse(this.inputValue))
         : JSON.parse(this.inputValue)
 
-      const result = await sender[dest.name](formattedData, dest)
+      const result = await sender[senderName](formattedData, senderOptions)
       let statusText = "Sent without response"
 
       if (result.success) {
@@ -83,12 +82,12 @@ createApp({
         this.inputValue = prettifyJson(response.entries)
 
         const filteredDestinations = response.destinations.filter(
-          dest => sender[dest.name.toLowerCase()] !== undefined
+          dest => sender[dest.sender] !== undefined
         )
 
         this.destinations = filteredDestinations
         if (filteredDestinations.length > 0) {
-          this.selectedDestination = filteredDestinations[0].name
+          this.selectedDestination = filteredDestinations[0].name || filteredDestinations[0].sender
         }
 
         if (response.errors.length > 0) {
