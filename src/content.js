@@ -32,7 +32,7 @@ const applyTransformation = (content, transformations, key) => {
   return [result, errMsg]
 }
 
-const getTextFromXpath = xpath => {
+const getTextsFromXpath = xpath => {
   const matches = document.evaluate(
     xpath,
     document,
@@ -48,20 +48,32 @@ const getTextFromXpath = xpath => {
       contents.push(text)
     }
   }
-  return contents.join(', ')
+  return contents
+}
+
+const getTextsFromCss = css => {
+  const elements = document.querySelectorAll(css)
+  const contents = []
+  elements.forEach(el => {
+    const text = el.innerText.trim()
+    if (text) {
+      contents.push(text)
+    }
+  })
+  return contents
 }
 
 function extractEntry(entry, key) {
-  let content = ''
+  let contents = null
   let errMsg = null
   if (typeof entry === 'string') {
-    content = getTextFromXpath(entry)
+    contents = getTextsFromXpath(entry)
   } else if (entry.xpath) {
-    content = getTextFromXpath(entry.xpath)
+    contents = getTextsFromXpath(entry.xpath)
   } else if (entry.css) {
-    const element = document.querySelector(entry.css)
-    content = element ? element.innerText.trim() : ''
+    contents = getTextsFromCss(entry.css)
   }
+  const content = contents ? contents.join(', ') : ''
   if (
     (content !== '' || (!entry.xpath && !entry.css)) &&
     entry.transformations
