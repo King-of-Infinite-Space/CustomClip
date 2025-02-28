@@ -16,6 +16,8 @@ createApp({
     url = url.replace(/github\.com\/(.*)\/blob\//, "raw.githubusercontent.com/$1/")
     // $1 is user/repo
     try {
+      // check if url is valid
+      const _ = new URL(url)
       const response = await fetch(url)
       if (!response.ok) {
         throw new Error(`HTTP error: ${response.status}`)
@@ -24,10 +26,10 @@ createApp({
       this.rules.push(...rules)
       this.ruleStr = prettifyJson(this.rules, {maxLevel: 4})
       const fileName = this.ruleUrl.split('/').pop()
-      this.fetchStatus = `${rules.length} rules added from ${fileName}. Please edit destinations. "Save" to confirm.`
+      this.fetchStatus = `${rules.length} rules added from ${fileName}. Please edit destinations and save.`
       console.debug(rules.length, 'rules fetched from', this.ruleUrl)
     } catch (error) {
-      this.fetchStatus = error
+      this.fetchStatus = `Error: ${error.message}`
       console.error('Failed to fetch external rules:', error)
     }
   },
