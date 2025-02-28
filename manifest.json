@@ -1,8 +1,8 @@
 {
   "name": "Custom Clip",
   "manifest_version": 3,
-  "version": "0.5.1",
-  "description": "Prototype",
+  "version": "1.0.1",
+  "description": "Web extension to extract specified text elements",
   "permissions": ["activeTab", "storage"],
   "content_scripts": [
     {
