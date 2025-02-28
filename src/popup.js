@@ -29,9 +29,9 @@ createApp({
   // Submit data to selected destination
   async submitData() {
     try {
-      this.postStatusClass = ''
-      this.postStatus = `Sending from ${this.currentRule} to ${destName}...`
       const senderName = this.selectedDestination
+      this.postStatusClass = ''
+      this.postStatus = `Sending from ${this.currentRule} to ${senderName}...`
 
       const senderOptions = this.destinations.filter(
         dest => dest.sender === senderName
@@ -45,16 +45,16 @@ createApp({
       let statusText = "Sent without response"
 
       if (result.success) {
-        // statusText = 'Success'
+        statusText = 'Success'
         this.postStatusClass = 'success'
       } else {
-        // statusText = 'Error'
+        statusText = 'Error'
         this.postStatusClass = 'error'
       }
 
       if (result.response) {
         const responseText = prettifyJson(result.response, {removeOutmost: true})
-        statusText = responseText
+        statusText += '\n' + responseText
       }
 
       this.postStatus = statusText
