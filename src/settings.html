@@ -37,15 +37,16 @@
         spellcheck="false"
       ></textarea>
     </p>
-    <p>
+    <p style="display: flex; justify-content: space-between; align-items: center;">
       <button v-on:click="saveRules">Save</button>
+      <a href="../example_rules/steam.json" id="rule-examples"
+        style="font-size: 0.9rem; color:var(--b-text)" target="_blank"
+        >Example</a>
     </p>
     <p>{{ saveStatus }}</p>
-    <h4 style="display: flex; justify-content: space-between; align-items: center;">
+    <h4>
       <label for="rule-url">Rule URL</label>
-        <a href="https://github.com/King-of-Infinite-Space/CustomClip/blob/main/example_rules/steam.json" id="rule-examples"
-        style="font-size: 0.8rem; color:#777" target="_blank"
-        >See example</a>
+        
     </h4>
     <p>
       <input type="text" name="rule-url" id="rule-url" v-model="ruleUrl" />

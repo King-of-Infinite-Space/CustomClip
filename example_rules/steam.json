@@ -1,6 +1,5 @@
 [
   {
-    "_comment": "Copy current page URL to extension settings to fetch this rule",
     "name": "steam",
     "matchURL": "store\\.steampowered\\.com/app/",
     "enabled": true,

@@ -10,7 +10,7 @@ createApp({
   saveStatus: '',
   fetchStatus: '',
   fetchExternalRules: async function () {
-    // support the github url (simply replace blob with raw)
+    // support the github url (simply replace blob with raw), e.g.
     // https://github.com/King-of-Infinite-Space/CustomClip/blob/main/example_rules/steam.json
     let url = this.ruleUrl.trim()
     url = url.replace(/github\.com\/(.*)\/blob\//, "raw.githubusercontent.com/$1/")
@@ -36,10 +36,7 @@ createApp({
       const result = await chrome.storage.sync.get('rules')
       let rules = result.rules
       if (!rules) {
-        rules = [{
-          "name": "Example Rule",
-          "matchURL": "example\.com",
-        }]
+        rules = []
       }
       this.rules = rules
       this.ruleStr = prettifyJson(rules, {maxLevel: 4})
