@@ -1,6 +1,10 @@
 // used in popup
 
-function getFilename(data) {
+export function generateFilename(
+  data,
+  prefix = 'custom-clip',
+  extension = 'md'
+) {
   // get filename from data object
   for (const [key, value] of Object.entries(data)) {
     if (key.toLowerCase() === 'title' || key === '标题') {
@@ -15,7 +19,7 @@ function getFilename(data) {
   const hh = String(now.getHours()).padStart(2, '0')
   const mm = String(now.getMinutes()).padStart(2, '0')
   const ss = String(now.getSeconds()).padStart(2, '0')
-  return `custom-clip-${yy}${MM}${dd}-${hh}${mm}${ss}.md`
+  return `${prefix}-${yy}${MM}${dd}-${hh}${mm}${ss}.${extension}`
 }
 
 export const sender = {
@@ -53,7 +57,7 @@ export const sender = {
       }
       yamlStr += '---\n'
 
-      const filename = getFilename(data)
+      const filename = generateFilename(data)
 
       // Create and download the file
       const blob = new Blob([yamlStr], { type: 'text/markdown' })
@@ -96,7 +100,7 @@ export const sender = {
     // remove name from params
     const urlParams = new URLSearchParams(params).toString()
     const obsidianURI = `obsidian://new?${urlParams}`
-  }
+  },
 }
 
 export const formatter = {

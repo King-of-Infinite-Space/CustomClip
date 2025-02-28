@@ -17,13 +17,21 @@
       label {
         cursor: default;
       }
+      button {
+
+      }
     </style>
   </head>
   <body>
     <h2>Settings</h2>
-    <h3>
-      <label for="rules">Rules</label>
-    </h3>
+    <span  style="display: flex; justify-content: space-between; align-items: baseline;">
+      <h3>
+        <label for="rules">Rules</label>
+      </h3>
+      <a href="../example_rules/steam.json" id="rule-examples"
+      style="font-size: 0.9rem; color:var(--b-text)" target="_blank"
+      >Example</a>
+    </span>
     <p>
       <textarea
         id="rules"
@@ -37,16 +45,14 @@
         spellcheck="false"
       ></textarea>
     </p>
-    <p style="display: flex; justify-content: space-between; align-items: center;">
+    <p style="display: flex; justify-content: flex-start; align-items: center; ">
       <button v-on:click="saveRules">Save</button>
-      <a href="../example_rules/steam.json" id="rule-examples"
-        style="font-size: 0.9rem; color:var(--b-text)" target="_blank"
-        >Example</a>
+        <button v-on:click="importRules"  style="margin-left: auto">Import</button>
+        <button v-on:click="exportRules" style="margin-left: 0.5rem">Export</button>
     </p>
     <p>{{ saveStatus }}</p>
     <h4>
       <label for="rule-url">Rule URL</label>
-        
     </h4>
     <p>
       <input type="text" name="rule-url" id="rule-url" v-model="ruleUrl" />
