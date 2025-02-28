@@ -4,8 +4,16 @@ body .hljs {
     font-size: 0.9rem;
 }
 
-body textarea {
-    font-family: var(--b-font-mono);
+body textarea, body code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+        "Cascadia Mono", "Segoe UI Mono",
+        "DejaVu Sans Mono", "Roboto Mono",
+        "Liberation Mono",
+        "Noto Sans CJK SC", "Noto Sans CJK TC", "Noto Sans CJK JP", "Noto Sans CJK KR",
+        "Source Han Sans SC", "Source Han Sans TC", "Source Han Sans",
+        "PingFang SC", "PingFang TC", "Hiragino Sans GB",
+        "Heiti SC", "Microsoft YaHei", "Microsoft JhengHei", "WenQuanYi Micro Hei", 
+        "Malgun Gothic", "Meiryo", sans-serif;
     line-height: 1.25;
     font-size: 0.9rem;
 }
